@@ -30,6 +30,15 @@
     <ClInclude Include="App.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Buffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Runtime.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AppPipe.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -42,6 +51,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="App.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Buffer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Runtime.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AppPipe.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

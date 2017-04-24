@@ -13,6 +13,8 @@ int main()
         std::cout << "$ ";
         std::string line;
         std::getline(std::cin, line);
+        if (line == "exit")
+            break;
         shell.exec(line);
     }
 

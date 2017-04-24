@@ -8,6 +8,9 @@ public:
     ~CShell();
 
     void exec(const std::string& cmd);
+
+private:
+    static void error(const std::string& str);
 };
 
 #endif
