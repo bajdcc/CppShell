@@ -7,6 +7,8 @@ enum app_t
     app_none,
     app_null,
     app_pipe,
+    app_range,
+    app_take,
     app__end
 };
 
@@ -51,6 +53,31 @@ public:
     int init() override;
     bool available() const override;
     char next() override;
+};
+
+class CAppRange : public CApp
+{
+public:
+    int init() override;
+    bool available() const override;
+    char next() override;
+
+private:
+    int start, end;
+    bool infinite;
+    std::queue<char> data;
+};
+
+class CAppTake : public CApp
+{
+public:
+    int init() override;
+    bool available() const override;
+    char next() override;
+
+private:
+    int start, end;
+    std::queue<char> data;
 };
 
 #endif

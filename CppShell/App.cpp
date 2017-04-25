@@ -1,7 +1,5 @@
 #include "stdafx.h"
 #include "App.h"
-#include "AppPipe.h"
-#include "AppNull.h"
 
 
 CApp::CApp()
@@ -23,6 +21,10 @@ std::shared_ptr<CApp> CApp::create(app_t type)
         return std::make_shared<CAppNull>();
     case app_pipe:
         return std::make_shared<CAppPipe>();
+    case app_range:
+        return std::make_shared<CAppRange>();
+    case app_take:
+        return std::make_shared<CAppTake>();
     default:
         break;
     }
@@ -36,6 +38,8 @@ struct CAppTypeInit
     CAppTypeInit()
     {
         map_type.insert(std::make_pair("pipe", app_pipe));
+        map_type.insert(std::make_pair("range", app_range));
+        map_type.insert(std::make_pair("take", app_take));
     }
 };
 
@@ -64,3 +68,4 @@ std::string CApp::get_err() const
 {
     return error;
 }
+

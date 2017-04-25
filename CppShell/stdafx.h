@@ -21,3 +21,4 @@
 #include <map>
 #include <iterator>
 #include <cassert>
+#include <queue>

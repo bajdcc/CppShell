@@ -23,6 +23,21 @@ namespace std
         ::split(s, delim, std::back_inserter(elems));
         return elems;
     }
+
+    std::string trim(const std::string& str, char delim = ' ')
+    {
+        std::string::size_type pos = str.find_first_not_of(delim);
+        if (pos == std::string::npos)
+        {
+            return str;
+        }
+        std::string::size_type pos2 = str.find_last_not_of(delim);
+        if (pos2 != std::string::npos)
+        {
+            return str.substr(pos, pos2 - pos + 1);
+        }
+        return str.substr(pos);
+    }
 }
 
 CShell::CShell()
@@ -41,11 +56,12 @@ void CShell::exec(const std::string& cmd)
     std::vector<std::vector<std::string>> arg;
     for (auto& str : s)
     {
+        str = std::trim(str);
         auto part = std::split(str, ' ');
         if (part.empty())
             return error("empty argument");
         auto apt = CApp::get_type_by_name(part[0]);
-        if (apt == app_none || apt == app_null)
+        if (apt == app_none)
             return error("invalid application: " + str);
         part.erase(part.begin());
         cmder.push_back(apt);
@@ -63,7 +79,9 @@ void CShell::exec(const std::string& cmd)
     }
     while (app->available())
     {
-        std::cout << app->next();
+        auto c = app->next();
+        if (c != '\0')
+            std::cout << c;
     }
 }
 
