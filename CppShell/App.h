@@ -1,11 +1,11 @@
 #ifndef _CAPP_H
 #define _CAPP_H
-#include "Buffer.h"
 
 enum app_t
 {
     app__begin,
     app_none,
+    app_null,
     app_pipe,
     app__end
 };
@@ -14,16 +14,43 @@ class CApp
 {
 public:
     CApp();
-    ~CApp();
+    virtual ~CApp();
 
     static std::shared_ptr<CApp> create(app_t type);
     static app_t get_type_by_name(const std::string &name);
 
-    void set_input_buffer(std::shared_ptr<CBuffer> buffer);
-    void set_output_buffer(std::shared_ptr<CBuffer> buffer);
+    int set_arg(std::vector<std::string> arg);
+    virtual int init() = 0;
 
-private:
-    std::shared_ptr<CBuffer> input_buf, output_buf;
+    void set_inner_app(std::shared_ptr<CApp> app);
+
+    std::string get_err() const;
+
+    virtual bool available() const = 0;
+    virtual char next() = 0;
+
+protected:
+    std::vector<std::string> args;
+    std::string error;
+    std::shared_ptr<CApp> inner;
+};
+
+// --------------------------------------------------
+
+class CAppNull : public CApp
+{
+public:
+    int init() override;
+    bool available() const override;
+    char next() override;
+};
+
+class CAppPipe : public CApp
+{
+public:
+    int init() override;
+    bool available() const override;
+    char next() override;
 };
 
 #endif

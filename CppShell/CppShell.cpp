@@ -7,7 +7,6 @@
 
 int main()
 {
-    CShell shell;
     for(;;)
     {
         std::cout << "$ ";
@@ -15,7 +14,7 @@ int main()
         std::getline(std::cin, line);
         if (line == "exit")
             break;
-        shell.exec(line);
+        CShell::exec(line);
     }
 
     return 0;

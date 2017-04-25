@@ -7,7 +7,7 @@ public:
     CShell();
     ~CShell();
 
-    void exec(const std::string& cmd);
+    static void exec(const std::string& cmd);
 
 private:
     static void error(const std::string& str);

@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "Shell.h"
 #include "App.h"
-#include "Buffer.h"
-#include "Runtime.h"
 
 
 template<typename Out>
@@ -41,32 +39,32 @@ void CShell::exec(const std::string& cmd)
     auto s = std::split(cmd, '|');
     std::vector<app_t> cmder;
     std::vector<std::vector<std::string>> arg;
-    for (const std::string& str : s)
+    for (auto& str : s)
     {
         auto part = std::split(str, ' ');
         if (part.empty())
             return error("empty argument");
         auto apt = CApp::get_type_by_name(part[0]);
-        if (apt == app_none)
+        if (apt == app_none || apt == app_null)
             return error("invalid application: " + str);
         part.erase(part.begin());
         cmder.push_back(apt);
         arg.push_back(part);
     }
-    std::vector<std::shared_ptr<CBuffer>> buffers(cmder.size() + 1);
-    for (uint32_t i = 0; i < buffers.size(); i++)
-    {
-        buffers[i] = std::make_shared<CBuffer>();
-    }
-    CRuntime rt;
+    auto inner = CApp::create(app_null);
+    std::shared_ptr<CApp> app;
     for (uint32_t i = 0; i < cmder.size(); i++)
     {
-        auto app = CApp::create(cmder[i]);
-        app->set_input_buffer(buffers[i]);
-        app->set_output_buffer(buffers[i + 1]);
-        rt.add_app(app);
+        app = CApp::create(cmder[i]);
+        if (app->set_arg(arg[i]) != 0)
+            return error(app->get_err());
+        app->set_inner_app(inner);
+        inner = app;
     }
-    rt.run();
+    while (app->available())
+    {
+        std::cout << app->next();
+    }
 }
 
 void CShell::error(const std::string& str)

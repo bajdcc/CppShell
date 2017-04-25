@@ -146,19 +146,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
-    <ClInclude Include="AppPipe.h" />
-    <ClInclude Include="Buffer.h" />
-    <ClInclude Include="Runtime.h" />
     <ClInclude Include="Shell.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
-    <ClCompile Include="AppPipe.cpp" />
-    <ClCompile Include="Buffer.cpp" />
+    <ClCompile Include="AppImpl.cpp" />
     <ClCompile Include="CppShell.cpp" />
-    <ClCompile Include="Runtime.cpp" />
     <ClCompile Include="Shell.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

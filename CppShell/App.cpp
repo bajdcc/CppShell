@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "App.h"
 #include "AppPipe.h"
+#include "AppNull.h"
 
 
 CApp::CApp()
@@ -18,12 +19,14 @@ std::shared_ptr<CApp> CApp::create(app_t type)
     {
     case app_none:
         break;
+    case app_null:
+        return std::make_shared<CAppNull>();
     case app_pipe:
         return std::make_shared<CAppPipe>();
     default:
         break;
     }
-    return nullptr;
+    assert(!"invalid type");
 }
 
 std::map<std::string, app_t> map_type;
@@ -46,12 +49,18 @@ app_t CApp::get_type_by_name(const std::string& name)
     return f->second;
 }
 
-void CApp::set_input_buffer(std::shared_ptr<CBuffer> buffer)
+int CApp::set_arg(std::vector<std::string> arg)
 {
-    input_buf = buffer;
+    args = arg;
+    return init();
 }
 
-void CApp::set_output_buffer(std::shared_ptr<CBuffer> buffer)
+void CApp::set_inner_app(std::shared_ptr<CApp> app)
 {
-    output_buf = buffer;
+    inner = app;
+}
+
+std::string CApp::get_err() const
+{
+    return error;
 }
