@@ -25,10 +25,13 @@ std::shared_ptr<CApp> CApp::create(app_t type)
         return std::make_shared<CAppRange>();
     case app_take:
         return std::make_shared<CAppTake>();
+    case app_last:
+        return std::make_shared<CAppLast>();
     default:
         break;
     }
     assert(!"invalid type");
+    return nullptr;
 }
 
 std::map<std::string, app_t> map_type;
@@ -40,6 +43,7 @@ struct CAppTypeInit
         map_type.insert(std::make_pair("pipe", app_pipe));
         map_type.insert(std::make_pair("range", app_range));
         map_type.insert(std::make_pair("take", app_take));
+        map_type.insert(std::make_pair("last", app_last));
     }
 };
 

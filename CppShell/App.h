@@ -9,6 +9,7 @@ enum app_t
     app_pipe,
     app_range,
     app_take,
+    app_last,
     app__end
 };
 
@@ -78,6 +79,18 @@ public:
 private:
     int start, end;
     std::queue<char> data;
+};
+
+class CAppLast : public CApp
+{
+public:
+    int init() override;
+    bool available() const override;
+    char next() override;
+
+private:
+    int start, end;
+    std::queue<std::queue<char>> data;
 };
 
 #endif

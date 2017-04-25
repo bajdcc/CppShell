@@ -128,3 +128,62 @@ char CAppTake::next()
     data.pop();
     return ch;
 }
+
+// ----------------------------------------------
+
+int CAppLast::init()
+{
+    if (args.size() == 1)
+    {
+        start = 1;
+        end = atoi(args[0].c_str());
+    }
+    else
+    {
+        error = "invalid argument size";
+        return -1;
+    }
+    return 0;
+}
+
+bool CAppLast::available() const
+{
+    return start <= end || !data.empty();
+}
+
+char CAppLast::next()
+{
+    if (data.empty())
+    {
+        if (!available())
+            return '\0';
+        std::queue<char> d;
+        while (inner->available())
+        {
+            auto c = inner->next();
+            d.push(c);
+            if (c == '\n')
+            {
+                if ((int)data.size() >= end)
+                    data.pop();
+                data.push(d);
+                std::queue<char>().swap(d);
+            }
+        }
+        end = data.size();
+        if (data.empty())
+            return '\0';
+    }
+    auto d = data.front();
+    if (d.empty())
+    {
+        start++;
+        data.pop();
+        if (data.empty())
+            return  '\0';
+        d = data.front();
+    }
+    auto c = d.front();
+    data.front().pop();
+    return c;
+}
