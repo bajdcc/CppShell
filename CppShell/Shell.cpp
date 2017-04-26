@@ -53,6 +53,7 @@ void CShell::exec(const std::string& cmd)
 {
     auto s = std::split(cmd, '|');
     std::vector<app_t> cmder;
+    std::vector<std::string> names;
     std::vector<std::vector<std::string>> arg;
     for (auto& str : s)
     {
@@ -60,6 +61,7 @@ void CShell::exec(const std::string& cmd)
         auto part = std::split(str, ' ');
         if (part.empty())
             return error("empty argument");
+        names.push_back(part[0]);
         auto apt = CApp::get_type_by_name(part[0]);
         if (apt == app_none)
             return error("invalid application: " + str);
@@ -73,7 +75,7 @@ void CShell::exec(const std::string& cmd)
     {
         app = CApp::create(cmder[i]);
         if (app->set_arg(arg[i]) != 0)
-            return error(app->get_err());
+            return error(names[i] + ": " + app->get_err());
         app->set_inner_app(inner);
         inner = app;
     }

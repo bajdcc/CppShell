@@ -27,6 +27,10 @@ std::shared_ptr<CApp> CApp::create(app_t type)
         return std::make_shared<CAppTake>();
     case app_last:
         return std::make_shared<CAppLast>();
+    case app_load:
+        return std::make_shared<CAppLoad>();
+    case app_save:
+        return std::make_shared<CAppSave>();
     default:
         break;
     }
@@ -44,6 +48,8 @@ struct CAppTypeInit
         map_type.insert(std::make_pair("range", app_range));
         map_type.insert(std::make_pair("take", app_take));
         map_type.insert(std::make_pair("last", app_last));
+        map_type.insert(std::make_pair("load", app_load));
+        map_type.insert(std::make_pair("save", app_save));
     }
 };
 

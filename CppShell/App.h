@@ -10,6 +10,8 @@ enum app_t
     app_range,
     app_take,
     app_last,
+    app_load,
+    app_save,
     app__end
 };
 
@@ -91,6 +93,28 @@ public:
 private:
     int start, end;
     std::queue<std::queue<char>> data;
+};
+
+class CAppLoad : public CApp
+{
+public:
+    int init() override;
+    bool available() const override;
+    char next() override;
+
+private:
+    std::ifstream ifs;
+};
+
+class CAppSave : public CApp
+{
+public:
+    int init() override;
+    bool available() const override;
+    char next() override;
+
+private:
+    std::ofstream ofs;
 };
 
 #endif

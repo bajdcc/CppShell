@@ -187,3 +187,73 @@ char CAppLast::next()
     data.front().pop();
     return c;
 }
+
+// ----------------------------------------------
+
+int CAppLoad::init()
+{
+    if (args.size() == 1)
+    {
+        ifs.open(args[0]);
+        if (!ifs.is_open())
+        {
+            error = "open file '" + args[0] + "' failed";
+            return -2;
+        }
+    }
+    else
+    {
+        error = "invalid argument size";
+        return -1;
+    }
+    return 0;
+}
+
+bool CAppLoad::available() const
+{
+    return !ifs.eof();
+}
+
+char CAppLoad::next()
+{
+    if (!available())
+        return '\0';
+    auto c = ifs.get();
+    if (c == -1)
+        return '\0';
+    return c;
+}
+
+// ----------------------------------------------
+
+int CAppSave::init()
+{
+    if (args.size() == 1)
+    {
+        ofs.open(args[0]);
+        if (!ofs.is_open())
+        {
+            error = "open file '" + args[0] + "' failed";
+            return -2;
+        }
+    }
+    else
+    {
+        error = "invalid argument size";
+        return -1;
+    }
+    return 0;
+}
+
+bool CAppSave::available() const
+{
+    return inner->available();
+}
+
+char CAppSave::next()
+{
+    auto c = inner->next();
+    if (c != '\0')
+        ofs.put(c);
+    return c;
+}
